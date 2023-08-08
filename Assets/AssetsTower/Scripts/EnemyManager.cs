@@ -5,48 +5,25 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     private int HealPoint;
-    private float timeToPool;
-    public GameObject spawnPlace;
-    private bool activateEnemy;
+    public float velocity;
 
-    public float velocity;// Start is called before the first frame update
-    
     void Start()
     {
         HealPoint = 100;
-        timeToPool = 0;
-        activateEnemy = true;
+       // velocity = .5f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        Debug.Log(timeToPool);
-        InstanceEnemys();
-    }
-   
-    public void InstanceEnemys()
-    {
-       timeToPool += Time.deltaTime;
-       
-        GameObject enemyToSpawn = EnemyPooling.SharedInstance.GetPoolEnemy();
-        if (timeToPool > 5 && activateEnemy)
+        MoveEnemy();
+        if(transform.position.z < -90f)
         {
-           
-            if(enemyToSpawn != null )
-            {
-                enemyToSpawn.transform.position = spawnPlace.transform.position;
-                enemyToSpawn.transform.rotation = spawnPlace.transform.rotation;
-                enemyToSpawn.SetActive(true);
-                timeToPool = 0;
-                //activateEnemy = false;
-               
-
-            }
-           
+            gameObject.SetActive(false);
         }
-
-       
+    }
+    public void MoveEnemy()
+    {
+        this.transform.Translate(new Vector3(0, 0, -1 * velocity));
     }
 }

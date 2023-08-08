@@ -1,44 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class EnemyPooling : MonoBehaviour
 {
-    public static EnemyPooling SharedInstance;
-    public GameObject enemyToPool;
-    private int amountToPool;
-    public List<GameObject> enemyPooleds;
+    
+    private float timeToPool;
+    public GameObject spawnPlace;
+    public ObjectPooling objectPool;
+    //private bool activateEnemy;
 
-    private void Awake()
-    {
-        SharedInstance = this;
-    }
-
+    //public float velocity;// Start is called before the first frame update
+    
     void Start()
     {
-        enemyPooleds = new List<GameObject>();
-        amountToPool = 10;
-        GameObject tmp;
-        for (int i = 0; i < amountToPool; i++)
-        {
-            tmp = Instantiate(enemyToPool);
-            tmp.SetActive(false);
-            enemyPooleds.Add(tmp);
-        }
-
+       
+        timeToPool = 0;
+       // activateEnemy = true;
     }
 
-
-    public GameObject GetPoolEnemy()
+    // Update is called once per frame
+    void Update()
     {
-        for (int i = 0; i < amountToPool; i++)
+        
+       // Debug.Log(timeToPool);
+       // InstanceEnemys();
+    }
+   
+    public void InstanceEnemys()
+    {
+       timeToPool += Time.fixedDeltaTime;
+       
+        GameObject enemyToSpawn = objectPool.GetPoolObject();
+        if (timeToPool > 5)
         {
-            if (!enemyPooleds[i].activeInHierarchy)
+           
+            if(enemyToSpawn != null )
             {
-                return enemyPooleds[i];
+                enemyToSpawn.transform.position = spawnPlace.transform.position;
+                enemyToSpawn.transform.rotation = spawnPlace.transform.rotation;
+                enemyToSpawn.SetActive(true);
+                timeToPool = 0;
+                //activateEnemy = false;              
             }
+           
         }
-        return null;
+
+       
     }
 }
