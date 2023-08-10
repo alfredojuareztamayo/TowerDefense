@@ -3,24 +3,36 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Manages object pooling for reusing game objects.
+/// </summary>
 public class ObjectPooling : MonoBehaviour
 {
-   // private  ObjectPooling SharedInstance;
+    /// <summary>
+    /// Array of object prefabs to be pooled.
+    /// </summary>
     public GameObject[] objectToPool;
+
+    /// <summary>
+    /// The total number of objects to be pooled.
+    /// </summary>
     public int amountToPool;
+
+    /// <summary>
+    /// List of pooled game objects.
+    /// </summary>
     public List<GameObject> pooledList;
 
     private void Awake()
     {
-       // SharedInstance = this;
+        // SharedInstance = this;
     }
 
     void Start()
     {
-        Debug.Log(objectToPool.Length);
-       
         pooledList = new List<GameObject>();
-        //amountToPool = 10;
+
+        // Instantiate and deactivate objects for pooling.
         GameObject tmp;
         for (int i = 0; i < amountToPool; i++)
         {
@@ -28,10 +40,12 @@ public class ObjectPooling : MonoBehaviour
             tmp.SetActive(false);
             pooledList.Add(tmp);
         }
-
     }
 
-
+    /// <summary>
+    /// Retrieves an available object from the pool.
+    /// </summary>
+    /// <returns>An inactive game object from the pool, or null if none are available.</returns>
     public GameObject GetPoolObject()
     {
         for (int i = 0; i < amountToPool; i++)
